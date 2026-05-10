@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Filter Demo</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f4f4;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #333;
+      color: white;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.03);
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .category {
+      margin-top: 10px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .cart-btn {
+      background: #ff9800;
+    }
+
+    .buy-btn {
+      background: #4caf50;
+    }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: #222;
+      color: white;
+      padding: 14px 20px;
+      border-radius: 10px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 999;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Product Filter Demo</h1>
+
+    <div class="filters">
+      <button onclick="filterProducts('all')">All</button>
+      <button onclick="filterProducts('mobile')">Mobile</button>
+      <button onclick="filterProducts('laptop')">Laptop</button>
+      <button onclick="filterProducts('watch')">Watch</button>
+    </div>
+
+    <div class="products">
+
+      <div class="card" data-category="mobile" onclick="handleCardClick(this)">
+        <h2>iPhone 15</h2>
+        <p>Apple smartphone</p>
+        <div class="category">Category: Mobile</div>
+        <div class="actions">
+          <button class="cart-btn" onclick="handleAction(this, 'Add to Cart')">Add to Cart</button>
+          <button class="buy-btn" onclick="handleAction(this, 'Buy Now')">Buy Now</button>
+        </div>
+      </div>
+
+      <div class="card" data-category="laptop" onclick="handleCardClick(this)">
+        <h2>MacBook Air</h2>
+        <p>Apple laptop</p>
+        <div class="category">Category: Laptop</div>
+        <div class="actions">
+          <button class="cart-btn" onclick="handleAction(this, 'Add to Cart')">Add to Cart</button>
+          <button class="buy-btn" onclick="handleAction(this, 'Buy Now')">Buy Now</button>
+        </div>
+      </div>
+
+      <div class="card" data-category="watch" onclick="handleCardClick(this)">
+        <h2>Galaxy Watch</h2>
+        <p>Samsung smartwatch</p>
+        <div class="category">Category: Watch</div>
+        <div class="actions">
+          <button class="cart-btn" onclick="handleAction(this, 'Add to Cart')">Add to Cart</button>
+          <button class="buy-btn" onclick="handleAction(this, 'Buy Now')">Buy Now</button>
+        </div>
+      </div>
+
+      <div class="card" data-category="mobile" onclick="handleCardClick(this)">
+        <h2>Pixel 9</h2>
+        <p>Google smartphone</p>
+        <div class="category">Category: Mobile</div>
+        <div class="actions">
+          <button class="cart-btn" onclick="handleAction(this, 'Add to Cart')">Add to Cart</button>
+          <button class="buy-btn" onclick="handleAction(this, 'Buy Now')">Buy Now</button>
+        </div>
+      </div>
+
+      <div class="card" data-category="mobile" onclick="handleCardClick(this)">
+        <h2>iPhone 15 Pro Max</h2>
+        <p>Apple flagship smartphone</p>
+        <div class="category">Category: Mobile</div>
+        <div class="actions">
+          <button class="cart-btn" onclick="handleAction(this, 'Add to Cart')">Add to Cart</button>
+          <button class="buy-btn" onclick="handleAction(this, 'Buy Now')">Buy Now</button>
+        </div>
+      </div>
+
+      <div class="card" data-category="laptop" onclick="handleCardClick(this)">
+        <h2>Dell XPS</h2>
+        <p>Windows laptop</p>
+        <div class="category">Category: Laptop</div>
+        <div class="actions">
+          <button class="cart-btn" onclick="handleAction(this, 'Add to Cart')">Add to Cart</button>
+          <button class="buy-btn" onclick="handleAction(this, 'Buy Now')">Buy Now</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+
+    function showToast(message) {
+
+      const toast = document.getElementById('toast');
+
+      toast.innerText = message;
+
+      toast.classList.add('show');
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+
+    }
+
+    function handleCardClick(card) {
+
+      const productName =
+        card.querySelector('h2').innerText;
+
+      showToast(
+        'Clicked on ' + productName + ' card'
+      );
+
+    }
+
+    function handleAction(button, action) {
+
+      event.stopPropagation();
+
+      const card = button.closest('.card');
+
+      const productName =
+        card.querySelector('h2').innerText;
+
+      showToast(
+        action + ' clicked for ' + productName
+      );
+
+    }
+
+    function filterProducts(category) {
+
+      const cards =
+        document.querySelectorAll('.card');
+
+      cards.forEach(card => {
+
+        const itemCategory =
+          card.getAttribute('data-category');
+
+        if (
+          category === 'all' ||
+          itemCategory === category
+        ) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+
+      });
+
+    }
+
+  </script>
+
+</body>
+</html>
